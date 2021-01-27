@@ -1,0 +1,16 @@
+https://leetcode.com/problems/count-sorted-vowel-strings/
+class Solution {
+public:
+    int countVowelStrings(int n) {
+        int na=1,ne=1,ni=1,no=1,nu=1;
+        while(n>1){
+            na = na+ne+ni+no+nu;
+            ne=ne+ni+no+nu;
+            ni=ni+no+nu;
+            no=no+nu;
+            nu=nu;
+            n--;
+        }
+        return na+ne+ni+no+nu;
+    }
+};
