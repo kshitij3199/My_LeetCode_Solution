@@ -1,0 +1,48 @@
+https://leetcode.com/problems/regular-expression-matching/
+class Solution {
+public:
+    
+    bool helper(string &s, string &p,int i,int j, map<pair<int,int>,int>&m){
+        if(m.find({i,j})!=m.end()){
+            return m[{i,j}];
+        }
+        if(i>=s.length() && j>=p.length()){
+            m[{i,j}]= true;
+            return m[{i,j}];
+        }
+        if(j>=p.length()){
+            m[{i,j}]= false;
+            return m[{i,j}];
+        }
+        if(i>=s.length()){
+            if(j+1<p.length() && p[j+1]=='*'){
+                m[{i,j}]=helper(s,p,i,j+2,m);
+                return m[{i,j}];
+            }else{
+                m[{i,j}]=false;
+                return m[{i,j}];
+            }
+        }
+        if(j+1<p.length() && p[j+1]=='*'){
+            if(s[i]==p[j] || p[j]=='.'){
+                 m[{i,j}]= helper(s,p,i+1,j,m) || helper(s,p,i,j+2,m) || helper(s,p,i+1,j+2,m);
+                return m[{i,j}];
+            }else{
+                m[{i,j}] = helper(s,p,i,j+2,m);
+                return m[{i,j}];
+            }
+           
+        }
+        
+        if(s[i]==p[j] || p[j]=='.'){
+            m[{i,j}]= helper(s,p,i+1,j+1,m);
+            return m[{i,j}];
+        }
+        m[{i,j}]=false;
+        return m[{i,j}];
+    }
+    bool isMatch(string s, string p) {
+        map<pair<int,int>,int>m;
+      return helper(s,p,0,0,m);  
+    }
+};
