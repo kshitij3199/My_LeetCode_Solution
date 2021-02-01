@@ -1,0 +1,36 @@
+https://leetcode.com/problems/wildcard-matching/
+
+class Solution {
+public:
+    
+    bool helper(string &s, string &p,int i,int j,map<pair<int,int>,bool>&m){
+        if(m.find({i,j})!=m.end()){
+            return m[{i,j}];
+        }
+        if(i>=s.length() && j>=p.length()){
+            return m[{i,j}]=true;
+        }
+        if(j>=p.length()){
+            return m[{i,j}]=false;
+        }
+        if(i>=s.length()){
+            if(p[j]=='*'){
+                return m[{i,j}]=helper(s,p,i,j+1,m);
+            }else{
+                return m[{i,j}]=false;
+            }
+        }
+        if(s[i]==p[j] || p[j]=='?'){
+            return m[{i,j}]=helper(s,p,i+1,j+1,m);
+        }
+        if(p[j]=='*'){
+            return m[{i,j}]=helper(s,p,i+1,j+1,m)||helper(s,p,i+1,j,m)||helper(s,p,i,j+1,m);
+        }
+        
+        return m[{i,j}]=false;
+    }
+    bool isMatch(string s, string p) {
+        map<pair<int,int>,bool>m;
+        return helper(s,p,0,0,m);
+    }
+};
