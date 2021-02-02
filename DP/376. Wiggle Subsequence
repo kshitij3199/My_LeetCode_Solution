@@ -1,0 +1,31 @@
+https://leetcode.com/problems/wiggle-subsequence/
+
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+        if(nums.size()==0 ){
+            return 0;
+        }
+        vector<int>pos(nums.size());
+        vector<int>neg(nums.size());
+        pos[0]=1;
+        neg[0]=1;
+        int ans=1;
+        for(int i=1;i<nums.size();i++){
+            int n = nums[i];
+            for(int j=i-1;j>=0;j--){
+                if(nums[j]<n){
+                    pos[i]=max(pos[i],neg[j]+1);
+                    ans = max(ans,pos[i]);
+                }
+                if(nums[j]>n){
+                    neg[i]=max(neg[i],pos[j]+1);
+                    ans = max(ans,neg[i]);
+                }
+                
+            }
+        }
+        return ans;
+        
+    }
+};
